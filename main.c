@@ -9,11 +9,10 @@ typedef struct {
     int quantite;
 } Product;
 
-// tableau global bach nkhznou produits
 Product produits[MAX_PRODUCTS];
 int totalProduits = 0;
 
-// Fonction Ajouter produit
+// Fonction Ajouter
 void Ajouter() {
     if (totalProduits >= MAX_PRODUCTS) {
         printf("Tableau rempli.\n");
@@ -32,7 +31,7 @@ void Ajouter() {
     totalProduits++;
 }
 
-// Fonction afficher produits
+// Fonction Afficher
 void afficher() {
     if (totalProduits == 0) {
         printf("Aucun produit enregistré.\n");
@@ -49,6 +48,63 @@ void afficher() {
     }
 }
 
+// Fonction Modifier
+void modifier() {
+    char nomRecherche[20];
+    printf("Entrez le nom du produit à modifier: ");
+    scanf("%s", nomRecherche);
+
+    int trouve = 0;
+    for (int i = 0; i < totalProduits; i++) {
+        if (strcmp(produits[i].nom, nomRecherche) == 0) {
+            printf("Produit trouvé. Entrez les nouvelles informations :\n");
+
+            printf("Nouveau nom: ");
+            scanf("%s", produits[i].nom);
+
+            printf("Nouvelle quantité: ");
+            scanf("%d", &produits[i].quantite);
+
+            printf("Nouveau prix: ");
+            scanf("%d", &produits[i].prix);
+
+            printf("Produit modifié avec succès.\n");
+            trouve = 1;
+            break;
+        }
+    }
+
+    if (!trouve) {
+        printf("Produit non trouvé.\n");
+    }
+}
+
+// Fonction Supprimer
+void supprimer() {
+    char nomRecherche[20];
+    printf("Entrez le nom du produit à supprimer: ");
+    scanf("%s", nomRecherche);
+
+    int trouve = 0;
+    for (int i = 0; i < totalProduits; i++) {
+        if (strcmp(produits[i].nom, nomRecherche) == 0) {
+            // Décaler tous les produits suivants
+            for (int j = i; j < totalProduits - 1; j++) {
+                produits[j] = produits[j + 1];
+            }
+            totalProduits--;
+            printf("Produit supprimé avec succès.\n");
+            trouve = 1;
+            break;
+        }
+    }
+
+    if (!trouve) {
+        printf("Produit non trouvé.\n");
+    }
+}
+
+// Programme principal
 int main() {
     int choix;
 
@@ -56,7 +112,9 @@ int main() {
         printf("\n====== MENU ======\n");
         printf("1. Ajouter un produit\n");
         printf("2. Afficher les produits\n");
-        printf("3. Quitter\n");
+        printf("3. Modifier un produit\n");
+        printf("4. Supprimer un produit\n");
+        printf("5. Quitter\n");
         printf("Entrez votre choix: ");
         scanf("%d", &choix);
 
@@ -68,12 +126,18 @@ int main() {
                 afficher();
                 break;
             case 3:
+                modifier();
+                break;
+            case 4:
+                supprimer();
+                break;
+            case 5:
                 printf("Au revoir !\n");
                 break;
             default:
                 printf("Choix invalide.\n");
         }
-    } while (choix != 3);
+    } while (choix != 5);
 
     return 0;
 }
